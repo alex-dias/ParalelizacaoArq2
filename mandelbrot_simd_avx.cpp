@@ -1,13 +1,13 @@
-#define _CRT_SECURE_NO_WARNINGS								// Exigido pelo VS para usar a operação fopen
-#include <time.h>											// Biblioteca para medir o tempo de execução
-#include <immintrin.h>										// Biblioteca para o uso de instruções intrínsecas do AVX
+#define _CRT_SECURE_NO_WARNINGS								// Exigido pelo VS para usar a operaÃ§Ã£o fopen
+#include <time.h>											// Biblioteca para medir o tempo de execuÃ§Ã£o
+#include <immintrin.h>										// Biblioteca para o uso de instruÃ§Ãµes intrÃ­nsecas do AVX
 #include <stdio.h>
 #include <math.h>
 
 int main()
 {
 	clock_t start, end;	
-	start = clock();										// Início da contagem de tempo
+	start = clock();										// InÃ­cio da contagem de tempo
 
 	const int iXmax = 16384;								// Tamanho da imagem
 	const int iYmax = 16384;
@@ -42,19 +42,19 @@ int main()
 	
 	fprintf(fp, "P6\n %d\n %d\n %d\n", iXmax, iYmax, MaxColorComponentValue);
 	
-	// Declaração intrínseca com os 8 valores iniciais de iY
+	// DeclaraÃ§Ã£o intrÃ­nseca com os 8 valores iniciais de iY
 	__m256 iY = _mm256_set_ps(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
 
-	// Todas as variaves utilizadas para calcular CyPara e CxPara devem ser vetores de Float possibilitando a paralelização
+	// Todas as variaves utilizadas para calcular CyPara e CxPara devem ser vetores de Float possibilitando a paralelizaÃ§Ã£o
 	__m256 PixelHeight256 = _mm256_set1_ps(PixelHeight);
 	__m256 CyMin256 = _mm256_set1_ps(CyMin);
 	__m256 PixelWidth256 = _mm256_set1_ps(PixelWidth);
 	__m256 CxMin256 = _mm256_set1_ps(CxMin);
 
-	// Essa vetor incrementa todos os valores de iX e iY para prepará-lo para a próxima iteração
+	// Essa vetor incrementa todos os valores de iX e iY para preparÃ¡-lo para a prÃ³xima iteraÃ§Ã£o
 	__m256 soma = _mm256_set1_ps(8.0f);
 
-	for (int i = 0; i < iYmax / 8; i++)				// iYmax/8 pois são calculados 8 valores de uma só vez
+	for (int i = 0; i < iYmax / 8; i++)				// iYmax/8 pois sÃ£o calculados 8 valores de uma sÃ³ vez
 	{
 		// Inline Assembly
 		__asm {
@@ -62,14 +62,14 @@ int main()
 			vmulps ymm1, ymm0, [PixelHeight256]
 			vaddps ymm1, ymm1, [CyMin256]
 			vmovups [CyPara], ymm1
-			vaddps ymm0, ymm0, [soma]				// Novos valores para a próxima iteração
+			vaddps ymm0, ymm0, [soma]				// Novos valores para a prÃ³xima iteraÃ§Ã£o
 			vmovups [iY], ymm0
 		}
 
-		for (int j = 0; j < 8; j++)					// Esse loop é necessário para passar cada valor de CyPara calculado
+		for (int j = 0; j < 8; j++)					// Esse loop Ã© necessÃ¡rio para passar cada valor de CyPara calculado
 		{
-			// Declaração intrínseca com os 8 valores iniciais de iX
-			// Perceba que o valor de iX deve ser reiniciado para cada valor de iY, por isso a declaração de iX está dentro desse "for"
+			// DeclaraÃ§Ã£o intrÃ­nseca com os 8 valores iniciais de iX
+			// Perceba que o valor de iX deve ser reiniciado para cada valor de iY, por isso a declaraÃ§Ã£o de iX estÃ¡ dentro desse "for"
 			__m256 iX = _mm256_set_ps(0.0f, 1.0f, 2.0f, 3.0f, 4.0f, 5.0f, 6.0f, 7.0f);
 
 			if (fabs(CyPara[j]) < PixelHeight / 2) CyPara[j] = 0.0;
@@ -82,7 +82,7 @@ int main()
 					vmulps ymm1, ymm0, [PixelWidth256]
 					vaddps ymm1, ymm1, [CxMin256]
 					vmovups [CxPara], ymm1
-					vaddps ymm0, ymm0, [soma]		// Novos valores para a próxima iteração
+					vaddps ymm0, ymm0, [soma]		// Novos valores para a prÃ³xima iteraÃ§Ã£o
 					vmovups [iX], ymm0
 				}
 
@@ -90,12 +90,12 @@ int main()
 				{
 					Zx = 0.0;
 					Zy = 0.0;
-					Zx2 = 0.0;							// O código original executava uma operação desnecessária nesse trecho
+					Zx2 = 0.0;							// O cÃ³digo original executava uma operaÃ§Ã£o desnecessÃ¡ria nesse trecho
 					Zy2 = 0.0;
 
 					for (Iteration = 0; Iteration < IterationMax && ((Zx2 + Zy2) < ER2); Iteration++)
 					{
-						// CyPara e CxPara são calculados 8 a 8, mas Zy e Zx precisam ser calculados 1 a 1 pois esse loop não é paralelizável
+						// CyPara e CxPara sÃ£o calculados 8 a 8, mas Zy e Zx precisam ser calculados 1 a 1 pois esse loop nÃ£o Ã© paralelizÃ¡vel
 						Zy = 2 * Zx*Zy + CyPara[j];		
 						Zx = Zx2 - Zy2 + CxPara[l];
 						Zx2 = Zx*Zx;
