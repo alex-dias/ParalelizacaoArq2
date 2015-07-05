@@ -26,7 +26,7 @@ int main()
 	
 	const int MaxColorComponentValue = 255;
 	FILE * fp;
-	char *filename = "mandelbrot.ppm";
+	char *filename = "mandelbrot_simd_avx.ppm";
 	static unsigned char color[3];
 	
 	float Zx, Zy;
