@@ -22,10 +22,19 @@ Com o processador AMD, foram feitos 10 testes com cada um dos três algoritmos e
 
 A partir do gráfico é possível reconhecer uma significante diferença entre os códigos paralelos e o código original, mesmo com o desvio padrão. A surpresa fica para a diferença entre os códigos paralelos, mesmo sendo mais recente e calculando o dobro de valores por vez, a técnica AVX foi levemente mais lenta em média comparada com o a SSE.
 
+Com o processador i5 CPU M 480 @ 2,67GHz 2,66GHz, foram realizados 10 testes com os algoritmos original e SSE, obtendo resultados que seguem abaixo:
+
+- imagem 
+
+O desvio padrão foi surpreendentemente alto, porém a paralelização SSE reduziu o tempo de execução do algoritmo de mandelbrot em média, 2 segundos, uma redução de 2%.
+
+Quanto aos processadores diferentes, obtemos resultados no segundo processador 63% mais rápido que o primeiro, porém, se analisarmos o quanto a paralelização SSE acelerou o algoritmo original, temos uma maior porcentagem no primeiro processador, de 5,5% mais rápido no primeiro, e 2% no segundo.
+A paralelização em AVX só foi possível no primeiro processador já que o segundo não possi suporte para esse tipo de instrução.
+Mas em relação ao processador AMD, o algoritmo paralelizado em AVX foi 5% mais rápido em relação ao original.
+
 As imagens geradas pelos 3 códigos são idênticas, desse modo a imagem seguinte é do código AVX. A imagem foi redimensionada e não é do mesmo formato do saída original, já que a imagem gerada possui mais de 700mb:
 
 ![](http://i.imgur.com/pSUKqVH.png?1)
 
 Ao comparar as imagens geradas, concluímos que não houve perda significante de qualidade ao mudar o tipo de variável dos códigos de Double para Float.
 
-[em construção]
