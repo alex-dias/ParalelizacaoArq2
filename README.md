@@ -35,7 +35,7 @@ Mas em relação ao processador AMD, o algoritmo paralelizado em AVX foi 5% mais
 
 As imagens geradas pelos 3 códigos são idênticas, como pode ser visto abaixo. As imagens foram redimensionadas e não são do mesmo formato da saída original, já que a imagem gerada possui mais de 700mb. Cada imagem abaixo possui 512x512 pixels:
 
-![](http://i59.tinypic.com/2qlzf2a.png)
+![](http://i62.tinypic.com/2ziocxy.png)
 
 Ao comparar as imagens geradas, concluímos que não houve perda significante de qualidade ao mudar o tipo de variável dos códigos de Double para Float.
 
