@@ -1,48 +1,48 @@
 #define _CRT_SECURE_NO_WARNINGS								// Exigido pelo VS para usar a operação fopen
 #include <time.h>											// Biblioteca para medir o tempo de execução
-#include <immintrin.h>										// Biblioteca para o uso de instruções intrínsecas 
+#include <immintrin.h>										// Biblioteca para o uso de instruções intrínsecas
 #include <stdio.h>
 #include <xmmintrin.h>
 #include <math.h>
 
 int main()
 {
-	clock_t start, end;	
+	clock_t start, end;
 	start = clock();										// Início da contagem de tempo
 
 	const int iXmax = 16384;								// Tamanho da imagem
 	const int iYmax = 16384;
-	
+
 	float cpu_time_used;
 
 	// A variavel Cx teve seu nome trocado para evitar conflito com o registrador cx do Assembly, Cy tambem foi trocado para manter o padrao
-	float CxPara[4], CyPara[4];			
+	float CxPara[4], CyPara[4];
 	const float CxMin = -2.5;								// O tipo das variaveis foram mudadas de Double para Float para possibilitar o
 	const float CxMax = 1.5;								// uso de 8 variaveis por registrador YMM do AVX, e mantidas para comparação com SSE
 	const float CyMin = -2.0;
 	const float CyMax = 2.0;
-	
+
 	float PixelWidth = (CxMax - CxMin) / iXmax;
 	float PixelHeight = (CyMax - CyMin) / iYmax;
-	
+
 	const int MaxColorComponentValue = 255;
 	FILE * fp;
-	char *filename = "mandelbrot.ppm";
+	char *filename = "mandelbrot_simd_sse.ppm";
 	static unsigned char color[3];
-	
+
 	float Zx, Zy;
-	float Zx2, Zy2; 
+	float Zx2, Zy2;
 
 	int Iteration;
 	const int IterationMax = 256;
-	
+
 	const float EscapeRadius = 2;
 	float ER2 = EscapeRadius*EscapeRadius;
-	
-	fp = fopen(filename, "wb"); 
-	
+
+	fp = fopen(filename, "wb");
+
 	fprintf(fp, "P6\n %d\n %d\n %d\n", iXmax, iYmax, MaxColorComponentValue);
-	
+
 	// Declaração intrínseca com os 4 valores iniciais de iY
 	__m128 iY = _mm_set_ps(0.0f, 1.0f, 2.0f, 3.0f);
 
@@ -99,14 +99,14 @@ int main()
 					for (Iteration = 0; Iteration < IterationMax && ((Zx2 + Zy2) < ER2); Iteration++)
 					{
 						// CyPara e CxPara são calculados 4 a 4, mas Zy e Zx precisam ser calculados 1 a 1 pois esse loop não é paralelizável
-						Zy = 2 * Zx*Zy + CyPara[j];		
+						Zy = 2 * Zx*Zy + CyPara[j];
 						Zx = Zx2 - Zy2 + CxPara[l];
 						Zx2 = Zx*Zx;
 						Zy2 = Zy*Zy;
 					};
-					
+
 					if (Iteration == IterationMax)
-					{ 
+					{
 						color[0] = 0;
 						color[1] = 0;
 						color[2] = 0;
@@ -118,7 +118,7 @@ int main()
 						color[1] = ((IterationMax - Iteration) % 4) * 127;  /* Green */
 						color[2] = ((IterationMax - Iteration) % 2) * 255;  /* Blue */
 					};
-					
+
 					fwrite(color, 1, 3, fp);
 				}
 			}
