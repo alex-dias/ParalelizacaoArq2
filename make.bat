@@ -1,0 +1,7 @@
+cl mandelbrot_original.cpp
+cl mandelbrot_simd_avx.cpp
+cl mandelbrot_simd_sse.cpp
+
+mandelbrot_original.exe
+mandelbrot_simd_avx.exe
+mandelbrot_simd_sse.exe
