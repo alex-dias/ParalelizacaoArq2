@@ -32,9 +32,9 @@ Quanto aos processadores diferentes, obtemos resultados no segundo processador 6
 A paralelização em AVX só foi possível no primeiro processador já que o segundo não possi suporte para esse tipo de instrução.
 Mas em relação ao processador AMD, o algoritmo paralelizado em AVX foi 5% mais rápido em relação ao original.
 
-As imagens geradas pelos 3 códigos são idênticas, desse modo a imagem seguinte é do código AVX. A imagem foi redimensionada e não é do mesmo formato do saída original, já que a imagem gerada possui mais de 700mb:
+As imagens geradas pelos 3 códigos são idênticas, como pode ser visto abaixo. As imagens foram redimensionadas e não é do mesmo formato do saída original, já que a imagem gerada possui mais de 700mb, cada imagem abaixo possui 512x512 pixels:
 
-![](http://i.imgur.com/pSUKqVH.png?1)
+![](http://i59.tinypic.com/2qlzf2a.png)
 
 Ao comparar as imagens geradas, concluímos que não houve perda significante de qualidade ao mudar o tipo de variável dos códigos de Double para Float.
 
