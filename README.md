@@ -1,8 +1,9 @@
 # ParalelizacaoArq2
-Trabalho de laboratório de arquitetura de computadores 2
+Trabalho de laboratório de arquitetura de computadores 2 2015/1
 
 Alexandre Dias Negretti 558214
-!Beatriz Leite Negrão    610534
+
+Beatriz Leite Negrão    610534
 
 O objetivo desse trabalho era paralelizar o algoritmo de Mandelbrot com instruções SIMD e Inline Assembly. Decidimos fazê-lo tanto com a técnica SSE e AVX, já que possuímos computadores compatíveis com ambas.
 
