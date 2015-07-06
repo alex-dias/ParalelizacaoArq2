@@ -24,7 +24,7 @@ A partir do gráfico é possível reconhecer uma significante diferença entre o
 
 Com o processador i5 CPU M 480 @ 2,67GHz 2,66GHz, foram realizados 10 testes com os algoritmos original e SSE, obtendo resultados que seguem abaixo:
 
-- imagem 
+![](http://i62.tinypic.com/2hyl82p.png) 
 
 O desvio padrão foi surpreendentemente alto, porém a paralelização SSE reduziu o tempo de execução do algoritmo de mandelbrot em média, 2 segundos, uma redução de 2%.
 
